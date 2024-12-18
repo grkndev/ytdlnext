@@ -1,29 +1,37 @@
 import { Button } from "@/components/ui/button";
 import VideoDetails from "@/components/VideoDetails";
-import { getVideoInfo, formatNumber } from "@/lib/utils";
-
+import VideoDetailsSkeleton from "@/components/VideoDetailsSkeleton";
+import { getVideoInfo } from "@/lib/utils";
 import { ChevronLeft } from "lucide-react";
+import Link from "next/link";
+import React, { Suspense } from "react";
 
-import React from "react";
+async function VideoDetailsWrapper({ slug }: { slug: string }) {
+  const data = await getVideoInfo(slug);
+  if (!data || !data.info || !data.info.author.thumbnails)
+    return <div>Video not found</div>;
+
+  return <VideoDetails data={data} />;
+}
 
 export default async function Page(props: {
   params: Promise<{ slug: string }>;
 }) {
   const params = await props.params;
-  const data = await getVideoInfo(params.slug);
-  // console.log(data)
-  if (!data || !data.info || !data.info.author.thumbnails)
-    return <div>loading...</div>;
 
   return (
     <main className="p-8 flex flex-col gap-8">
       <div>
-        <Button className="bg-zinc-900" variant={"secondary"}>
-          <ChevronLeft size={24} />
-          <span>Convert an other video</span>
+        <Button asChild className="bg-zinc-900" variant={"secondary"}>
+          <Link href="/" className="flex items-center">
+            <ChevronLeft size={24} />
+            <span>Convert an other video</span>
+          </Link>
         </Button>
       </div>
-      <VideoDetails data={data} />
+      <Suspense fallback={<VideoDetailsSkeleton />}>
+        <VideoDetailsWrapper slug={params.slug} />
+      </Suspense>
     </main>
   );
 }

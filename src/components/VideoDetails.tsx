@@ -26,7 +26,6 @@ export default async function VideoDetails({ data }: { data: any }) {
 
       <div className="flex sm:flex-row flex-col sm:items-center sm:justify-between gap-4 sm:gap-0">
         <div className="flex flex-row gap-4 items-start">
-          <div>
             <img
               className="w-16 h-16 rounded-full"
               src={
@@ -35,7 +34,6 @@ export default async function VideoDetails({ data }: { data: any }) {
                 ].url
               }
             />
-          </div>
 
           <div className="flex flex-col gap-1">
             <h3 className="text-xl font-semibold">{data.info.title}</h3>
