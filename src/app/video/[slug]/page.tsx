@@ -1,20 +1,29 @@
-import { getVideoInfo } from "@/lib/utils";
-import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import VideoDetails from "@/components/VideoDetails";
+import { getVideoInfo, formatNumber } from "@/lib/utils";
+
+import { ChevronLeft } from "lucide-react";
+
 import React from "react";
 
-export default async function Page({ params }: { params: { slug: string } }) {
+export default async function Page(props: {
+  params: Promise<{ slug: string }>;
+}) {
+  const params = await props.params;
   const data = await getVideoInfo(params.slug);
+  // console.log(data)
+  if (!data || !data.info || !data.info.author.thumbnails)
+    return <div>loading...</div>;
 
   return (
-    <main>
-      <img
-      className="w-1/3"
-        src={data.info.thumbnails[data.info.thumbnails.length - 1].url}
-        width={data.info.thumbnails[data.info.thumbnails.length - 1].width}
-        height={data.info.thumbnails[data.info.thumbnails.length - 1].height}
-        alt={data.info.title}
-      />
-      <h1>{data.info.title}</h1>
+    <main className="p-8 flex flex-col gap-8">
+      <div>
+        <Button className="bg-zinc-900" variant={"secondary"}>
+          <ChevronLeft size={24} />
+          <span>Convert an other video</span>
+        </Button>
+      </div>
+      <VideoDetails data={data} />
     </main>
   );
 }
