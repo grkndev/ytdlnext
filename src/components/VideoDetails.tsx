@@ -9,7 +9,7 @@ dayjs.extend(relativeTime);
 export default async function VideoDetails({ data }: { data: any }) {
   // console.log(data)
   return (
-    <div className=" flex flex-col gap-4 xl:w-2/5 md:w-3/5">
+    <div className=" flex flex-col gap-4 xl:w-2/5 lg:w-3/5">
       <div className="relative  rounded-2xl overflow-hidden">
         <img
           className="w-full  "
